@@ -20,7 +20,17 @@ unsigned char* minimal_decode() {
   unsigned char* image = 0;
   unsigned width, height;
 
-  error = lodepng_decode32(&image, &width, &height, IMAGE_NAME, sizeof(IMAGE_NAME));
+  // error = lodepng_decode32(&image, &width, &height, IMAGE_NAME, sizeof(IMAGE_NAME));
+
+  LodePNGState state;
+  lodepng_state_init(&state);
+  state.info_raw.colortype = LCT_RGBA;
+  state.info_raw.bitdepth = 8;
+  state.decoder.zlibsettings.ignore_adler32 = 1;
+  state.decoder.ignore_crc = 1;
+  error = lodepng_decode(&image, &width, &height, &state, IMAGE_NAME, sizeof(IMAGE_NAME));
+  lodepng_state_cleanup(&state);
+
   if (error)
     printf("error %u: %s\n", error, lodepng_error_text(error));
 
