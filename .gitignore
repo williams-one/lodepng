@@ -1,0 +1,5 @@
+decode_benchmark
+decode_to_bitmap
+lodepng_benchmark
+a.out
+*.bmp
